@@ -7,12 +7,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   IoFlame, IoSparkles, IoCalendar, IoBulb, IoNavigate, 
   IoChevronForward, IoBicycle, IoTime, IoPlay, IoStatsChart, 
-  IoRibbon, IoCheckmarkCircle, IoRestaurant, IoWaterOutline, 
-  IoPersonCircle, IoBookOutline 
+  IoRibbon, IoRestaurant, IoWaterOutline, 
+  IoPersonCircle 
 } from 'react-icons/io5';
 
 const MyJourney = () => {
-  const { user, toggleChecklist, logWater, addToast } = useAuth();
+  const { user, toggleChecklist, logWater } = useAuth();
   const navigate = useNavigate();
 
   const [dbData, setDbData] = useState(null);
@@ -122,64 +122,7 @@ const MyJourney = () => {
 
   const xpPercent = Math.min(100, (user.xp / (user.xpToNextLevel || 200)) * 100);
 
-  // SVG Illustration with Floating Animation
-  const FloatingIllustration = () => (
-    <motion.div
-      animate={{ y: [0, -12, 0] }}
-      transition={{
-        duration: 5,
-        repeat: Infinity,
-        ease: 'easeInOut'
-      }}
-      style={{ width: '100%', maxWidth: '380px', margin: '0 auto' }}
-    >
-      <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="circleGrad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" transform="translate(200 140) rotate(90) scale(110)">
-            <stop stopColor="#F97316" stopOpacity="0.25" />
-            <stop offset="1" stopColor="var(--bg-primary)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="greenGrad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" transform="translate(130 90) rotate(90) scale(60)">
-            <stop stopColor="#10B981" stopOpacity="0.15" />
-            <stop offset="1" stopColor="var(--bg-primary)" stopOpacity="0" />
-          </radialGradient>
-        </defs>
 
-        {/* Ambient background glows */}
-        <circle cx="200" cy="140" r="110" fill="url(#circleGrad)" />
-        <circle cx="130" cy="90" r="60" fill="url(#greenGrad)" />
-
-        {/* Floor Line */}
-        <line x1="50" y1="220" x2="350" y2="220" stroke="var(--border-color)" strokeWidth="4" strokeLinecap="round" />
-
-        {/* Floating Ring Orbs */}
-        <motion.circle 
-          cx="80" 
-          cy="70" 
-          r="8" 
-          fill="#10B981" 
-          animate={{ y: [0, -8, 0] }} 
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.circle 
-          cx="330" 
-          cy="110" 
-          r="12" 
-          fill="#F97316" 
-          animate={{ y: [0, 8, 0] }} 
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-        />
-
-        {/* Premium Athlete Shape (Vector Art Yoga/Stretch pose) */}
-        <path d="M140 220 L170 160 L145 130 L190 95 L220 135 L260 180 L290 220" stroke="#F97316" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="200" cy="72" r="15" fill="var(--text-white)" filter="drop-shadow(0 0 8px rgba(255,255,255,0.3))" />
-        
-        {/* Kettlebell / Gym weights details */}
-        <circle cx="310" cy="200" r="18" fill="var(--bg-secondary)" stroke="#10B981" strokeWidth="4" />
-        <path d="M302 186 C302 178 318 178 318 186" stroke="#10B981" strokeWidth="3" fill="none" />
-      </svg>
-    </motion.div>
-  );
 
   return (
     <>

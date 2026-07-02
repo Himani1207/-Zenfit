@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   IoChevronBack, 
@@ -10,7 +10,6 @@ import {
   IoRibbon,
   IoFitness,
   IoRestaurant,
-  IoLayers,
   IoTimeOutline,
   IoSparkles,
   IoWaterOutline
@@ -295,7 +294,6 @@ const ActivityCalendar = ({ activities = [], mock = false }) => {
             );
           }
 
-          const hasDetails = cell.activity && (cell.activity.missionCompleted || cell.activity.completed);
           const isInteractable = !cell.isFuture;
 
           return (

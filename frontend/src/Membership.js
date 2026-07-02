@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import { motion } from 'framer-motion';
 import { 
   IoCheckmarkCircle, 
-  IoCloseCircle, 
   IoSparkles, 
   IoRibbon, 
   IoFlame, 

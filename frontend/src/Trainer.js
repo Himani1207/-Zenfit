@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { api, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Skeleton from './components/Skeleton';
-import { IoCalendar, IoStar, IoCheckmarkCircle, IoClose, IoLayers, IoChatbubbleEllipses, IoMedal } from 'react-icons/io5';
+import { IoStar, IoCheckmarkCircle, IoClose, IoMedal } from 'react-icons/io5';
 
 const TrainerManagement = () => {
-  const { user, addToast } = useAuth();
+  const { addToast } = useAuth();
   
   const [trainers, setTrainers] = useState([]);
   const [selectedTrainer, setSelectedTrainer] = useState(null);

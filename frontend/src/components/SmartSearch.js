@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { IoSearch, IoClose, IoFlash, IoFitness, IoRestaurant, IoPeople } from 'react-icons/io5';
+import { IoSearch, IoClose, IoFlash, IoFitness, IoRestaurant } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../context/AuthContext';
 

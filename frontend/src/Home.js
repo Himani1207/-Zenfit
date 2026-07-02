@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth, api } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ActivityCalendar from './components/ActivityCalendar';
-import { IoFitness, IoRestaurant, IoCalendar, IoStatsChart, IoRibbon, IoCheckmarkCircle, IoPlay } from 'react-icons/io5';
+import { IoFitness, IoRestaurant, IoCalendar, IoRibbon, IoPlay } from 'react-icons/io5';
+
+const testimonials = [
+  { name: "Himani Sharma", role: "Yoga Practitioner", text: "ZenFit transformed my morning routine! Ticking off the checklist daily keeps me focused, and the XP level-up system actually makes fitness fun.", rating: 5 },
+  { name: "Naman Verma", role: "Strength Athlete", text: "The exercise explorer has crystal clear guides. I stopped making simple form mistakes on squats. Truly a premium experience.", rating: 5 },
+  { name: "Komal Preet", role: "Home Fitness Enthusiast", text: "Pantry Mode in the Meal Planner is a life saver! I select eggs, tomatoes, and paneer, and the backend gives me exact healthy recipes immediately.", rating: 5 }
+];
 
 const HomePage = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [calendarData, setCalendarData] = useState([]);
 
   useEffect(() => {
@@ -25,11 +30,6 @@ const HomePage = () => {
   }, [user]);
 
   // Testimonials Slider state
-  const testimonials = [
-    { name: "Himani Sharma", role: "Yoga Practitioner", text: "ZenFit transformed my morning routine! Ticking off the checklist daily keeps me focused, and the XP level-up system actually makes fitness fun.", rating: 5 },
-    { name: "Naman Verma", role: "Strength Athlete", text: "The exercise explorer has crystal clear guides. I stopped making simple form mistakes on squats. Truly a premium experience.", rating: 5 },
-    { name: "Komal Preet", role: "Home Fitness Enthusiast", text: "Pantry Mode in the Meal Planner is a life saver! I select eggs, tomatoes, and paneer, and the backend gives me exact healthy recipes immediately.", rating: 5 }
-  ];
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   useEffect(() => {

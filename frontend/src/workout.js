@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { api, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Play, Pause, SkipForward, SkipBack, X, Search, SlidersHorizontal, Heart, 
-  Flame, Clock, Dumbbell, Calendar, Trophy, BookOpen, ChevronRight, 
-  RotateCcw, Award, Sparkles, CheckCircle2, TrendingUp, Info, AlertTriangle, 
-  ShieldCheck, HelpCircle, AlignLeft, Compass, Activity, ArrowRight, BookMarked
+  Flame, Clock, Dumbbell, Calendar, Trophy, BookOpen, 
+  Award, Sparkles, TrendingUp, 
+  ShieldCheck, Compass, Activity, ArrowRight
 } from 'lucide-react';
 
 // Premium Category configuration with specific Lucide icons, accent colors, and glow shadows
@@ -201,7 +201,7 @@ const ExerciseSvgDemo = ({ exerciseName }) => {
 };
 
 const WorkoutPlans = () => {
-  const { user, toggleChecklist, addToast } = useAuth();
+  const { user, addToast } = useAuth();
   
   // Tabs: 'sessions' | 'programs' | 'library' | 'history'
   const [activeTab, setActiveTab] = useState('sessions');
@@ -224,7 +224,6 @@ const WorkoutPlans = () => {
   const [progressList, setProgressList] = useState([]);
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Active workout timer session state
@@ -241,7 +240,7 @@ const WorkoutPlans = () => {
   const timerInterval = useRef(null);
 
   // Load Data
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -278,11 +277,11 @@ const WorkoutPlans = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     loadData();
-  }, [user]);
+  }, [loadData]);
 
   // Synthesis Bell Ring Sound via Web Audio API
   const playBellSound = () => {
@@ -356,6 +355,26 @@ const WorkoutPlans = () => {
     setCompletionRecap(null);
   };
 
+  // Finish session
+  const finishWorkout = useCallback(async () => {
+    setWorkoutState('complete');
+    if (timerInterval.current) clearInterval(timerInterval.current);
+    
+    try {
+      const res = await api.post(`/workouts/sessions/${activeSession._id}/complete`, {
+        durationSec: totalDurationSec,
+        exercisesCompleted: activeSession.exercises.length
+      });
+      setCompletionRecap(res.data);
+    } catch (err) {
+      setCompletionRecap({
+        xpGained: 50,
+        level: user?.level || 1,
+        unlockedBadges: []
+      });
+    }
+  }, [activeSession, totalDurationSec, user]);
+
   // Timer Tick Loop
   useEffect(() => {
     if (workoutState === 'idle' || workoutState === 'complete' || isPaused) {
@@ -395,27 +414,7 @@ const WorkoutPlans = () => {
     return () => {
       if (timerInterval.current) clearInterval(timerInterval.current);
     };
-  }, [workoutState, currentExIdx, isPaused, activeSession]);
-
-  // Finish session
-  const finishWorkout = async () => {
-    setWorkoutState('complete');
-    if (timerInterval.current) clearInterval(timerInterval.current);
-    
-    try {
-      const res = await api.post(`/workouts/sessions/${activeSession._id}/complete`, {
-        durationSec: totalDurationSec,
-        exercisesCompleted: activeSession.exercises.length
-      });
-      setCompletionRecap(res.data);
-    } catch (err) {
-      setCompletionRecap({
-        xpGained: 50,
-        level: user?.level || 1,
-        unlockedBadges: []
-      });
-    }
-  };
+  }, [workoutState, currentExIdx, isPaused, activeSession, finishWorkout]);
 
   const handleQuitWorkout = () => {
     if (window.confirm('Are you sure you want to quit this guided workout session? Progress will not be saved.')) {

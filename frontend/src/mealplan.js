@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { api, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
-import Skeleton from './components/Skeleton';
-import { IoSparkles, IoLeaf, IoHeart, IoSwapHorizontal, IoPrint, IoCart, IoLayers, IoTime } from 'react-icons/io5';
+import { IoSparkles, IoHeart, IoSwapHorizontal, IoPrint, IoCart, IoLayers } from 'react-icons/io5';
 import { motion } from 'framer-motion';
 
 // Premium Empty State Component
@@ -154,7 +153,7 @@ const PremiumEmptyState = ({ user, pantryMode, selectedPantry }) => {
 };
 
 const MealPlan = () => {
-  const { user, theme, addToast } = useAuth();
+  const { user, addToast } = useAuth();
   
   // Form states
   const [goal, setGoal] = useState('Stay Healthy');
@@ -165,33 +164,26 @@ const MealPlan = () => {
   
   // Results
   const [activePlan, setActivePlan] = useState(null);
-  const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
 
   const pantryIngredients = ['Milk', 'Paneer', 'Rice', 'Curd', 'Tomatoes', 'Oats', 'Bananas', 'Eggs'];
+
+  const fetchHistoryAndFavorites = useCallback(async () => {
+    try {
+      const favRes = await api.get('/meals/favorites');
+      setFavorites(favRes.data);
+    } catch (err) {
+      console.error('Error fetching meal histories:', err);
+    }
+  }, []);
 
   useEffect(() => {
     if (user) {
       setGoal(user.fitnessGoal || 'Stay Healthy');
     }
     fetchHistoryAndFavorites();
-  }, [user]);
-
-  const fetchHistoryAndFavorites = async () => {
-    try {
-      setLoading(true);
-      const histRes = await api.get('/meals/history');
-      const favRes = await api.get('/meals/favorites');
-      setHistory(histRes.data);
-      setFavorites(favRes.data);
-    } catch (err) {
-      console.error('Error fetching meal histories:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [user, fetchHistoryAndFavorites]);
 
   const handlePantryToggle = (ing) => {
     setSelectedPantry(prev => 

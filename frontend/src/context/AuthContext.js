@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext(null);
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Add Toast Notification Helper
-  const addToast = (message, type = 'info') => {
+  const addToast = useCallback((message, type = 'info') => {
     const id = Date.now() + Math.random().toString(36).substr(2, 9);
     setToasts((prev) => [...prev, { id, message, type }]);
     
@@ -33,12 +33,20 @@ export const AuthProvider = ({ children }) => {
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4000);
-  };
+  }, []);
 
   // Remove Toast manually
-  const removeToast = (id) => {
+  const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, []);
+
+  const logout = useCallback(() => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('zenfitToken');
+    sessionStorage.removeItem('zenfitToken');
+    addToast('Logged out successfully.', 'info');
+  }, [addToast]);
 
   // Configure Axios Request Interceptor
   useEffect(() => {
@@ -73,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     verifyUser();
-  }, [token]);
+  }, [token, logout]);
 
   const login = async (email, password, rememberMe) => {
     try {
@@ -110,13 +118,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    setToken(null);
-    setUser(null);
-    localStorage.removeItem('zenfitToken');
-    sessionStorage.removeItem('zenfitToken');
-    addToast('Logged out successfully.', 'info');
-  };
+
 
   const updateProfileMetrics = async (metrics) => {
     try {

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { api, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
-import ActivityTimeline from './components/ActivityTimeline';
-import { IoPerson, IoSettings, IoRibbon, IoHeart, IoLockClosed, IoTrendingUp, IoCalendar } from 'react-icons/io5';
+import { IoSettings, IoRibbon, IoHeart, IoLockClosed } from 'react-icons/io5';
 
 const Profile = () => {
-  const { user, setUser, updateProfileMetrics, logout, addToast } = useAuth();
+  const { user, updateProfileMetrics, addToast } = useAuth();
 
   // Edit details states
   const [name, setName] = useState('');
@@ -24,7 +23,7 @@ const Profile = () => {
   // Lists
   const [savedWorkouts, setSavedWorkouts] = useState([]);
   const [savedMeals, setSavedMeals] = useState([]);
-  const [bookings, setBookings] = useState([]);
+
 
   useEffect(() => {
     if (user) {
@@ -81,11 +80,7 @@ const Profile = () => {
 
   if (!user) return null;
 
-  const currentLevelName = user.level < 3 ? 'Fitness Starter' 
-                        : user.level < 6 ? 'Fitness Explorer' 
-                        : user.level < 10 ? 'Athletic Catalyst' 
-                        : user.level < 15 ? 'Iron Warrior' 
-                        : 'Zen Master';
+
 
   return (
     <>

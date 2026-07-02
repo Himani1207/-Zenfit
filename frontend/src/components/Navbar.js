@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { motion } from 'framer-motion';
+
 import { IoMenu, IoClose, IoSearch, IoPersonCircle, IoSunny, IoMoon } from 'react-icons/io5';
 import SmartSearch from './SmartSearch';
 
 const Navbar = () => {
   const { user, logout, theme, toggleTheme } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
   
   const [mobileOpen, setMobileOpen] = useState(false);
