@@ -1,0 +1,112 @@
+/* --- CSS Variables / Design System --- */
+:root, [data-theme='dark'] {
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-navbar: rgba(15, 23, 42, 0.85);
+  --bg-inner: rgba(255, 255, 255, 0.02);
+  --accent-orange: #F97316;
+  --accent-green: #10B981;
+  --text-white: #FFFFFF;
+  --text-slate: #94A3B8;
+  --border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='light'] {
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #FFFFFF;
+  --bg-navbar: rgba(248, 250, 252, 0.85);
+  --bg-inner: rgba(0, 0, 0, 0.03);
+  --text-white: #0F172A;
+  --text-slate: #475569;
+  --border-color: rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-white);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* --- Card Effects & Interactions --- */
+.workout-card, .trainer-card, .feature-card {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s, box-shadow 0.25s !important;
+}
+
+.workout-card:hover, .trainer-card:hover, .feature-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.25) !important;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* --- Glowing Buttons --- */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+  .nav-username {
+    display: none !important;
+  }
+}
+
+/* PRINT STYLES FOR GROCERY / MEAL PLANS */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  header, footer, button, .no-print, .desktop-nav, .mobile-menu-btn {
+    display: none !important;
+  }
+  .print-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .print-area * {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border-color: #CCCCCC !important;
+  }
+}
