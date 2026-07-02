@@ -4,8 +4,19 @@ import axios from 'axios';
 const AuthContext = createContext(null);
 
 // Configure Axios Defaults
+const getBaseURL = () => {
+  const envUrl = process.env.REACT_APP_API_URL;
+  if (!envUrl) return 'http://localhost:5000/api';
+  
+  // Clean trailing slash
+  const cleanedUrl = envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
+  
+  // Append /api if not present
+  return cleanedUrl.endsWith('/api') ? cleanedUrl : `${cleanedUrl}/api`;
+};
+
 export const api = axios.create({
-  baseURL: 'http://localhost:5000/api'
+  baseURL: getBaseURL()
 });
 
 export const AuthProvider = ({ children }) => {
